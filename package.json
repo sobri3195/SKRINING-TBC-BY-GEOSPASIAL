@@ -2,7 +2,7 @@
   "name": "skrining-tbc-geospasial",
   "version": "1.0.0",
   "description": "Sistem Skrining TBC Berbasis Geospasial",
-  "type": "commonjs",
+  "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
