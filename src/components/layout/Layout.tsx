@@ -122,24 +122,25 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
         <div className="h-16 bg-white border-b border-gray-200 flex items-center justify-between px-4 lg:px-6">
           <button
             onClick={() => setSidebarOpen(true)}
-            className="lg:hidden text-gray-500 hover:text-gray-700"
+            className="lg:hidden text-gray-500 hover:text-gray-700 p-2"
+            aria-label="Open menu"
           >
             <Menu className="w-6 h-6" />
           </button>
           
           <div className="flex-1 lg:block hidden"></div>
           
-          <div className="flex items-center gap-4">
-            <div className="hidden md:block">
-              <div className="bg-blue-50 border border-blue-200 px-3 py-1 rounded text-xs text-blue-700">
-                🚀 <strong>Mode Demo</strong> - Data akan reset saat refresh
+          <div className="flex items-center gap-2 md:gap-4">
+            <div className="hidden sm:block">
+              <div className="bg-blue-50 border border-blue-200 px-2 md:px-3 py-1 rounded text-xs text-blue-700">
+                🚀 <strong>Mode Demo</strong>
               </div>
             </div>
-            <div className="text-sm text-gray-600">{user?.wilayah}</div>
+            <div className="text-xs md:text-sm text-gray-600 truncate max-w-[120px] md:max-w-none">{user?.wilayah}</div>
           </div>
         </div>
 
-        <main className="flex-1 overflow-y-auto p-4 lg:p-6">
+        <main className="flex-1 overflow-y-auto p-3 sm:p-4 lg:p-6">
           {children}
         </main>
       </div>
