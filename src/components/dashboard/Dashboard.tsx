@@ -40,25 +40,25 @@ const Dashboard: React.FC = () => {
   ];
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 md:space-y-6">
       <div>
-        <h1 className="text-3xl font-bold text-gray-900">Dashboard Analitik</h1>
-        <p className="text-gray-600 mt-1">Ringkasan data TBC dan kegiatan skrining</p>
+        <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Dashboard Analitik</h1>
+        <p className="text-sm md:text-base text-gray-600 mt-1">Ringkasan data TBC dan kegiatan skrining</p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
         {statCards.map((stat, index) => {
           const Icon = stat.icon;
           return (
-            <div key={index} className="card">
+            <div key={index} className="card p-4 md:p-6">
               <div className="flex items-start justify-between">
                 <div className="flex-1">
-                  <p className="text-sm text-gray-600 mb-1">{stat.title}</p>
-                  <p className="text-3xl font-bold text-gray-900">{stat.value}</p>
+                  <p className="text-xs md:text-sm text-gray-600 mb-1">{stat.title}</p>
+                  <p className="text-2xl md:text-3xl font-bold text-gray-900">{stat.value}</p>
                   <p className="text-xs text-gray-500 mt-1">{stat.change}</p>
                 </div>
-                <div className={`${stat.color} p-3 rounded-lg`}>
-                  <Icon className="w-6 h-6 text-white" />
+                <div className={`${stat.color} p-2 md:p-3 rounded-lg flex-shrink-0`}>
+                  <Icon className="w-5 h-5 md:w-6 md:h-6 text-white" />
                 </div>
               </div>
             </div>
@@ -66,25 +66,25 @@ const Dashboard: React.FC = () => {
         })}
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <div className="card">
-          <h2 className="text-lg font-bold text-gray-900 mb-4">Tren Kasus & Skrining</h2>
-          <ResponsiveContainer width="100%" height={300}>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 md:gap-6">
+        <div className="card p-4 md:p-6">
+          <h2 className="text-base md:text-lg font-bold text-gray-900 mb-3 md:mb-4">Tren Kasus & Skrining</h2>
+          <ResponsiveContainer width="100%" height={250}>
             <LineChart data={monthlyData}>
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="bulan" />
-              <YAxis />
+              <XAxis dataKey="bulan" tick={{ fontSize: 12 }} />
+              <YAxis tick={{ fontSize: 12 }} />
               <Tooltip />
-              <Legend />
+              <Legend wrapperStyle={{ fontSize: '12px' }} />
               <Line type="monotone" dataKey="kasus" stroke="#ef4444" strokeWidth={2} name="Kasus Baru" />
               <Line type="monotone" dataKey="skrining" stroke="#3b82f6" strokeWidth={2} name="Skrining" />
             </LineChart>
           </ResponsiveContainer>
         </div>
 
-        <div className="card">
-          <h2 className="text-lg font-bold text-gray-900 mb-4">Distribusi Status Kasus</h2>
-          <ResponsiveContainer width="100%" height={300}>
+        <div className="card p-4 md:p-6">
+          <h2 className="text-base md:text-lg font-bold text-gray-900 mb-3 md:mb-4">Distribusi Status Kasus</h2>
+          <ResponsiveContainer width="100%" height={250}>
             <PieChart>
               <Pie
                 data={statusData}
@@ -92,9 +92,10 @@ const Dashboard: React.FC = () => {
                 cy="50%"
                 labelLine={false}
                 label={({ name, percent }) => `${name}: ${(percent * 100).toFixed(0)}%`}
-                outerRadius={80}
+                outerRadius={60}
                 fill="#8884d8"
                 dataKey="value"
+                style={{ fontSize: '11px' }}
               >
                 {statusData.map((entry, index) => (
                   <Cell key={`cell-${index}`} fill={entry.color} />
@@ -105,31 +106,31 @@ const Dashboard: React.FC = () => {
           </ResponsiveContainer>
         </div>
 
-        <div className="card">
-          <h2 className="text-lg font-bold text-gray-900 mb-4">Kasus per Wilayah</h2>
-          <ResponsiveContainer width="100%" height={300}>
+        <div className="card p-4 md:p-6">
+          <h2 className="text-base md:text-lg font-bold text-gray-900 mb-3 md:mb-4">Kasus per Wilayah</h2>
+          <ResponsiveContainer width="100%" height={250}>
             <BarChart data={wilayahData}>
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="wilayah" />
-              <YAxis />
+              <XAxis dataKey="wilayah" tick={{ fontSize: 12 }} />
+              <YAxis tick={{ fontSize: 12 }} />
               <Tooltip />
               <Bar dataKey="kasus" fill="#0ea5e9" name="Jumlah Kasus" />
             </BarChart>
           </ResponsiveContainer>
         </div>
 
-        <div className="card">
-          <h2 className="text-lg font-bold text-gray-900 mb-4">Aktivitas Terbaru</h2>
-          <div className="space-y-3 max-h-[300px] overflow-y-auto">
+        <div className="card p-4 md:p-6">
+          <h2 className="text-base md:text-lg font-bold text-gray-900 mb-3 md:mb-4">Aktivitas Terbaru</h2>
+          <div className="space-y-2 md:space-y-3 max-h-[250px] overflow-y-auto">
             {fieldActivities.slice(0, 5).map((activity) => (
-              <div key={activity.id} className="flex items-start gap-3 p-3 bg-gray-50 rounded-lg">
-                <div className="bg-primary-100 p-2 rounded">
-                  <Activity className="w-4 h-4 text-primary-600" />
+              <div key={activity.id} className="flex items-start gap-2 md:gap-3 p-2 md:p-3 bg-gray-50 rounded-lg">
+                <div className="bg-primary-100 p-1.5 md:p-2 rounded flex-shrink-0">
+                  <Activity className="w-3 h-3 md:w-4 md:h-4 text-primary-600" />
                 </div>
-                <div className="flex-1">
-                  <p className="text-sm font-semibold text-gray-900">{activity.petugasName}</p>
+                <div className="flex-1 min-w-0">
+                  <p className="text-xs md:text-sm font-semibold text-gray-900 truncate">{activity.petugasName}</p>
                   <p className="text-xs text-gray-600">{activity.activityType.replace(/_/g, ' ')}</p>
-                  <p className="text-xs text-gray-500 mt-1">{activity.notes}</p>
+                  <p className="text-xs text-gray-500 mt-1 line-clamp-2">{activity.notes}</p>
                 </div>
               </div>
             ))}

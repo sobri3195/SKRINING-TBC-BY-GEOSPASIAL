@@ -38,36 +38,36 @@ const ScreeningList: React.FC = () => {
   };
 
   return (
-    <div className="space-y-6">
-      <div className="flex items-center justify-between">
+    <div className="space-y-4 md:space-y-6">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Data Skrining</h1>
-          <p className="text-gray-600 mt-1">Total {filteredScreenings.length} data skrining</p>
+          <h1 className="text-2xl md:text-3xl font-bold text-gray-900">Data Skrining</h1>
+          <p className="text-sm md:text-base text-gray-600 mt-1">Total {filteredScreenings.length} data skrining</p>
         </div>
-        <button onClick={handleExport} className="btn-primary flex items-center gap-2">
+        <button onClick={handleExport} className="btn-primary flex items-center justify-center gap-2 text-sm md:text-base">
           <Download className="w-4 h-4" />
-          Export CSV
+          <span>Export CSV</span>
         </button>
       </div>
 
-      <div className="card">
-        <div className="flex flex-col md:flex-row gap-4 mb-6">
+      <div className="card p-3 md:p-6">
+        <div className="flex flex-col md:flex-row gap-3 md:gap-4 mb-4 md:mb-6">
           <div className="flex-1 relative">
-            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
+            <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 md:w-5 md:h-5 text-gray-400" />
             <input
               type="text"
               placeholder="Cari nama atau alamat..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="input-field pl-10"
+              className="input-field pl-9 md:pl-10 text-sm md:text-base"
             />
           </div>
           <div className="flex items-center gap-2">
-            <Filter className="w-5 h-5 text-gray-600" />
+            <Filter className="w-4 h-4 md:w-5 md:h-5 text-gray-600 flex-shrink-0" />
             <select
               value={filterType}
               onChange={(e) => setFilterType(e.target.value)}
-              className="input-field"
+              className="input-field text-sm md:text-base"
             >
               <option value="all">Semua Jenis</option>
               <option value="kontak_erat">Kontak Erat</option>
@@ -77,7 +77,7 @@ const ScreeningList: React.FC = () => {
           </div>
         </div>
 
-        <div className="overflow-x-auto">
+        <div className="hidden lg:block overflow-x-auto">
           <table className="w-full">
             <thead>
               <tr className="border-b border-gray-200">
@@ -135,8 +135,54 @@ const ScreeningList: React.FC = () => {
           </table>
         </div>
 
+        <div className="lg:hidden space-y-3">
+          {filteredScreenings.map((screening) => {
+            const symptomCount = Object.values(screening.symptoms).filter(v => v === true).length;
+            return (
+              <div key={screening.id} className="border border-gray-200 rounded-lg p-3 bg-white">
+                <div className="flex items-start justify-between mb-2">
+                  <div className="flex-1">
+                    <h3 className="font-semibold text-gray-900 text-sm">{screening.personName}</h3>
+                    <p className="text-xs text-gray-500">{screening.age} tahun</p>
+                  </div>
+                  <span className="text-xs px-2 py-0.5 bg-blue-100 text-blue-800 rounded flex-shrink-0">
+                    {screening.screeningType.replace('_', ' ')}
+                  </span>
+                </div>
+                <div className="space-y-1.5 text-xs mb-2">
+                  <div className="flex items-start gap-2">
+                    <span className="text-gray-500">Alamat:</span>
+                    <span className="text-gray-900 flex-1">{screening.address}</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-gray-500">Tanggal:</span>
+                    <span className="text-gray-900">{formatDate(screening.screeningDate)}</span>
+                  </div>
+                </div>
+                <div className="flex flex-wrap gap-2">
+                  <span className={`text-xs px-2 py-0.5 rounded ${symptomCount > 2 ? 'bg-red-100 text-red-800' : symptomCount > 0 ? 'bg-yellow-100 text-yellow-800' : 'bg-green-100 text-green-800'}`}>
+                    {symptomCount} gejala
+                  </span>
+                  {screening.referred && (
+                    <span className="text-xs px-2 py-0.5 bg-orange-100 text-orange-800 rounded">Rujuk</span>
+                  )}
+                  {screening.result && (
+                    <span className={`text-xs px-2 py-0.5 rounded ${
+                      screening.result === 'positif' ? 'bg-red-100 text-red-800' :
+                      screening.result === 'suspek' ? 'bg-yellow-100 text-yellow-800' :
+                      'bg-green-100 text-green-800'
+                    }`}>
+                      {screening.result}
+                    </span>
+                  )}
+                </div>
+              </div>
+            );
+          })}
+        </div>
+
         {filteredScreenings.length === 0 && (
-          <div className="text-center py-12 text-gray-500">
+          <div className="text-center py-8 md:py-12 text-sm md:text-base text-gray-500">
             Tidak ada data skrining yang ditemukan
           </div>
         )}
